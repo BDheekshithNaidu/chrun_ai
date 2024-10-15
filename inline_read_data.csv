@@ -1,0 +1,101 @@
+,CustomerID,ServiceQuality,PricingAndPlans,ContractualObligations,CompetitorOffers,CustomerEngagement,BillingIssues,ServiceChanges,CustomerLifecycleStage,UsagePatterns,EconomicFactors,TechnologyTrends,CustomerSentiment,Churn
+0,1,7,Standard,1 Year,1,1,1,0,New,47,1,8,5,0
+1,2,4,Basic,1 Year,1,4,0,1,At-Risk,25,5,1,5,1
+2,3,8,Premium,2 Years,1,5,1,1,New,66,4,3,5,0
+3,4,5,Premium,None,1,4,0,0,At-Risk,10,10,10,3,1
+4,5,7,Standard,None,1,1,0,1,New,56,8,9,3,1
+5,6,10,Basic,None,0,4,0,1,At-Risk,30,1,5,2,1
+6,7,3,Premium,2 Years,0,3,0,0,New,5,10,6,4,1
+7,8,7,Standard,1 Year,1,4,0,1,Churned,33,1,4,1,1
+8,9,8,Premium,1 Year,1,2,0,0,Active,65,4,10,5,0
+9,10,5,Premium,None,0,2,1,1,New,18,8,2,2,1
+10,11,4,Basic,1 Year,0,3,0,0,At-Risk,96,5,8,1,1
+11,12,8,Premium,1 Year,1,1,0,0,Churned,49,2,6,2,1
+12,13,8,Basic,2 Years,0,2,0,0,New,11,6,5,3,1
+13,14,3,Premium,2 Years,1,5,1,1,New,85,5,9,5,0
+14,15,6,Standard,2 Years,0,2,1,0,Churned,26,2,1,1,1
+15,16,5,Premium,2 Years,1,2,0,1,New,63,3,5,1,1
+16,17,2,Basic,None,0,1,1,0,Active,89,9,6,1,1
+17,18,8,Basic,2 Years,1,4,0,0,New,86,7,5,1,1
+18,19,6,Standard,1 Year,0,2,0,1,Active,59,7,6,1,1
+19,20,2,Premium,None,0,3,1,0,Active,27,6,6,2,1
+20,21,5,Premium,1 Year,1,4,0,0,Churned,49,8,7,5,1
+21,22,1,Standard,1 Year,0,5,1,1,New,77,4,4,3,0
+22,23,10,Premium,1 Year,1,1,1,0,Churned,33,8,8,3,1
+23,24,6,Premium,2 Years,0,5,0,0,New,98,4,7,3,0
+24,25,9,Basic,2 Years,1,4,0,0,New,99,8,9,3,0
+25,26,1,Premium,None,0,4,1,0,At-Risk,1,9,7,2,1
+26,27,10,Premium,None,1,4,0,1,New,21,3,3,4,1
+27,28,3,Standard,2 Years,0,5,0,1,Churned,55,3,3,5,1
+28,29,7,Standard,1 Year,1,4,0,0,Active,6,2,8,1,1
+29,30,4,Basic,None,0,5,1,1,New,92,10,5,4,1
+30,31,9,Premium,2 Years,1,4,1,0,At-Risk,81,3,4,3,1
+31,32,3,Premium,2 Years,1,3,0,1,Churned,69,3,8,4,1
+32,33,5,Premium,2 Years,1,4,1,0,New,95,5,6,5,0
+33,34,3,Basic,1 Year,0,5,1,0,Churned,5,5,2,1,1
+34,35,7,Basic,2 Years,1,2,1,0,At-Risk,3,2,4,1,1
+35,36,5,Standard,2 Years,0,4,1,0,At-Risk,53,10,4,5,1
+36,37,9,Basic,2 Years,1,2,1,0,Churned,23,6,6,5,1
+37,38,7,Premium,2 Years,0,3,0,0,New,53,5,6,3,0
+38,39,2,Premium,None,1,1,0,1,Active,37,6,1,1,1
+39,40,4,Basic,None,0,3,0,0,At-Risk,74,1,8,4,1
+40,41,9,Premium,2 Years,0,4,1,1,New,74,5,6,2,1
+41,42,2,Premium,1 Year,1,2,1,0,New,83,9,3,2,1
+42,43,10,Basic,None,0,2,0,1,Active,17,10,9,5,1
+43,44,9,Basic,2 Years,0,5,1,1,At-Risk,85,2,2,3,1
+44,45,10,Premium,None,1,2,0,1,At-Risk,78,1,8,2,1
+45,46,5,Premium,None,0,5,0,0,New,73,10,10,1,1
+46,47,2,Premium,1 Year,0,1,0,0,New,1,9,3,5,1
+47,48,4,Standard,2 Years,0,4,1,1,Active,51,10,5,4,1
+48,49,7,Standard,2 Years,1,5,1,0,Active,45,9,6,5,0
+49,50,8,Standard,1 Year,0,1,0,1,At-Risk,77,9,10,4,1
+50,51,3,Basic,1 Year,1,2,0,0,Churned,4,6,6,5,1
+51,52,1,Standard,2 Years,0,2,0,1,At-Risk,62,8,4,5,1
+52,53,4,Basic,2 Years,0,1,0,1,New,65,1,3,5,1
+53,54,2,Basic,1 Year,0,2,1,0,At-Risk,32,10,4,4,1
+54,55,8,Standard,None,1,1,1,1,Churned,34,4,1,4,1
+55,56,4,Standard,None,0,5,0,0,Active,92,1,4,5,0
+56,57,2,Standard,1 Year,0,5,0,1,Churned,95,8,1,2,1
+57,58,6,Premium,None,1,1,1,1,Churned,72,1,1,3,1
+58,59,6,Standard,1 Year,0,5,1,0,Churned,39,3,10,3,1
+59,60,10,Premium,None,1,5,0,0,Active,26,4,6,3,1
+60,61,4,Basic,None,1,5,0,0,Churned,34,8,5,4,1
+61,62,6,Premium,2 Years,0,3,0,1,Churned,54,6,4,4,1
+62,63,2,Standard,2 Years,1,4,1,0,Churned,3,10,3,2,1
+63,64,10,Basic,None,0,2,1,1,New,50,7,1,3,0
+64,65,2,Basic,None,1,3,1,1,Churned,12,8,6,3,1
+65,66,10,Basic,2 Years,1,5,0,0,Active,65,2,2,5,0
+66,67,4,Premium,2 Years,0,1,0,0,Churned,54,10,8,4,1
+67,68,8,Standard,2 Years,1,5,1,1,Churned,5,8,10,3,1
+68,69,7,Basic,1 Year,1,4,1,1,Active,94,3,5,2,1
+69,70,9,Basic,None,1,5,0,0,Churned,94,7,7,2,1
+70,71,8,Basic,2 Years,1,1,1,0,Active,57,3,10,3,0
+71,72,5,Premium,None,1,4,1,0,Churned,17,7,2,4,1
+72,73,2,Premium,1 Year,0,5,0,0,Active,47,2,8,2,1
+73,74,5,Standard,1 Year,1,4,1,0,Churned,23,10,2,5,1
+74,75,8,Premium,2 Years,0,2,0,1,Churned,79,6,4,2,1
+75,76,10,Basic,1 Year,1,2,0,1,New,85,3,1,1,1
+76,77,9,Standard,None,0,5,0,1,New,14,3,5,1,1
+77,78,9,Basic,2 Years,0,4,0,1,Churned,66,9,9,4,1
+78,79,1,Basic,None,1,1,0,0,Churned,75,7,1,3,1
+79,80,9,Premium,None,1,5,0,0,At-Risk,51,5,9,4,1
+80,81,7,Standard,1 Year,1,2,0,0,Active,38,10,8,4,0
+81,82,9,Premium,1 Year,0,2,1,1,At-Risk,64,7,6,4,1
+82,83,8,Premium,1 Year,1,5,0,1,New,98,9,7,4,0
+83,84,1,Standard,1 Year,0,4,0,0,New,38,1,3,5,0
+84,85,8,Basic,1 Year,0,2,1,0,New,50,7,1,5,0
+85,86,8,Basic,2 Years,0,4,1,1,New,98,6,5,2,1
+86,87,3,Standard,None,1,2,1,1,Churned,82,10,2,1,1
+87,88,1,Basic,None,1,2,0,0,New,30,9,5,4,1
+88,89,8,Standard,None,0,3,1,0,Churned,79,1,8,2,1
+89,90,3,Standard,None,0,2,0,1,Churned,91,4,9,1,1
+90,91,3,Premium,1 Year,1,1,0,0,New,51,9,2,3,1
+91,92,1,Standard,None,0,5,0,0,New,63,4,3,5,0
+92,93,5,Premium,2 Years,1,5,0,0,Active,98,10,3,1,1
+93,94,10,Basic,2 Years,0,4,1,1,At-Risk,52,3,1,3,1
+94,95,7,Basic,None,1,2,1,1,New,38,9,8,1,1
+95,96,10,Basic,None,0,1,0,1,Active,97,2,6,5,0
+96,97,9,Basic,2 Years,1,4,0,1,Active,88,4,8,5,0
+97,98,7,Premium,2 Years,0,3,0,1,At-Risk,79,6,9,2,1
+98,99,9,Basic,1 Year,1,4,1,1,Churned,30,2,5,4,1
+99,100,8,Standard,2 Years,1,4,0,1,New,51,8,3,1,1
