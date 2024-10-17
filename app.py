@@ -86,7 +86,7 @@ fig_bar = px.bar(customer_engagement_churn, x='Churn', y='CustomerEngagement',
                   title='Average Customer Engagement by Churn Status', 
                   labels={'CustomerEngagement': 'Average Engagement'},
                   color='Churn',
-                  color_discrete_map={0: '#32CD32', 1: '#FF4500'})  # Different colors for churn situations
+                  color_discrete_map={0: '#808000', 1: '#FF0000'})  # Different colors for churn situations
 st.plotly_chart(fig_bar)
 
 # 5. Histogram for Customer Sentiment
