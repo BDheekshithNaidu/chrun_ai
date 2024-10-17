@@ -3,9 +3,11 @@ import pandas as pd
 import numpy as np
 import tensorflow as tf
 from keras.models import load_model
-from sklearn.preprocessing import StandardScaler
 import joblib
 import plotly.express as px
+import seaborn as sns
+import matplotlib.pyplot as plt
+
 # Load the saved best model and scaler
 model = load_model('best_demo_customer_churn_model_nn.h5')
 scaler = joblib.load('scaler.pkl')  # Assuming you've saved the scaler as 'scaler.pkl'
@@ -31,44 +33,92 @@ df = pd.DataFrame(data)
 
 # Refine churn based on additional conditions
 conditions = [
-    (df['ServiceQuality'] <= 4) & (df['CustomerEngagement'] <= 2) & (df['BillingIssues'] == 1),  # Poor service, low engagement, billing issues
-    (df['CompetitorOffers'] == 1) & (df['ContractualObligations'] == 'None'),  # Competitor offer and no contract
-    (df['CustomerLifecycleStage'].isin(['At-Risk', 'Churned'])),  # Already at-risk or churned customers
-    (df['PricingAndPlans'] == 'Basic') & (df['ServiceQuality'] <= 5),  # Basic plan and low service quality
-    (df['EconomicFactors'] >= 8) & (df['ServiceQuality'] <= 5),  # Economic stress and low service quality
-    (df['UsagePatterns'] <= 20),  # Very low usage
-    (df['CustomerSentiment'] <= 2),  # Low sentiment reflects dissatisfaction
+    (df['ServiceQuality'] <= 4) & (df['CustomerEngagement'] <= 2) & (df['BillingIssues'] == 1),
+    (df['CompetitorOffers'] == 1) & (df['ContractualObligations'] == 'None'),
+    (df['CustomerLifecycleStage'].isin(['At-Risk', 'Churned'])),
+    (df['PricingAndPlans'] == 'Basic') & (df['ServiceQuality'] <= 5),
+    (df['EconomicFactors'] >= 8) & (df['ServiceQuality'] <= 5),
+    (df['UsagePatterns'] <= 20),
+    (df['CustomerSentiment'] <= 2),
 ]
 
-# Assign churn based on conditions
 df['Churn'] = np.select(conditions, [1, 1, 1, 1, 1, 1, 1], default=0)
-
-# df = pd.read_csv("inline_read_data.csv")
-
 
 # Display Churn Prediction App Title
 st.title('Churn Prediction App')
 
+# Display Churned Customers Data
+st.write("## Churned Customers Data")
+churned_customers = df[df['Churn'] == 1]
+st.dataframe(churned_customers)
+
 # Section: Data Visualization
 st.write("## Churn Insights Visualization")
 
-# Visualizing churn distribution
-fig_pie = px.pie(df, names='Churn', title='Churn Distribution')
+# 1. Pie Chart for Churn Distribution
+fig_pie = px.pie(df, names='Churn', title='Churn Distribution', hole=0.3, color_discrete_sequence=['#FF4500', '#32CD32'])
 st.plotly_chart(fig_pie)
+st.write("This pie chart shows the churn distribution based on various features. Notably, we have a 79% churn rate compared to the bar graph of plans vs churn, thid is because here the data is taken by combaining all the features when compared to Pricing & plans vs churn bar graph")
 
-# Service quality vs churn (useful to see how service quality affects churn)
-fig_bar = px.bar(df, x='ServiceQuality', y='Churn', title='Service Quality vs Churn',
-                 color='Churn', barmode='group')
+# 2. Stacked Bar Chart for Pricing and Plans vs Churn (showing percentages)
+pricing_churn = df.groupby(['PricingAndPlans', 'Churn']).size().unstack().fillna(0)
+pricing_churn_percentage = (pricing_churn.div(pricing_churn.sum(axis=1), axis=0) * 100).round(2)
+fig_stacked_bar = px.bar(pricing_churn_percentage, x=pricing_churn_percentage.index, 
+                          y=pricing_churn_percentage.columns, 
+                          title='Churn Distribution by Pricing and Plans (Percentage)', 
+                          labels={'value': 'Percentage', 'variable': 'Churn'},
+                          text_auto=True,
+                          color_discrete_sequence=['#FF4500', '#32CD32'])
+st.plotly_chart(fig_stacked_bar)
+
+# 3. Heatmap for Feature Correlation with intelligent description
+st.write("### Feature Correlation Heatmap")
+st.write("This heatmap displays the correlations between numeric features in the dataset. A value close to 1 or -1 indicates a strong relationship, while values near 0 indicate weak relationships.")
+numeric_df = df.select_dtypes(include=[np.number])
+correlation_matrix = numeric_df.corr()
+plt.figure(figsize=(10, 8))
+sns.heatmap(correlation_matrix, annot=True, cmap='viridis', fmt='.2f', center=0)
+st.pyplot(plt)
+
+# 4. Bar Plot for Customer Engagement vs Churn
+customer_engagement_churn = df.groupby('Churn')['CustomerEngagement'].mean().reset_index()
+fig_bar = px.bar(customer_engagement_churn, x='Churn', y='CustomerEngagement',
+                  title='Average Customer Engagement by Churn Status', 
+                  labels={'CustomerEngagement': 'Average Engagement'},
+                  color='Churn',
+                  color_discrete_map={0: '#32CD32', 1: '#FF4500'})  # Different colors for churn situations
 st.plotly_chart(fig_bar)
 
-# Adding more features for visualization
-fig_scatter = px.scatter(df, x='UsagePatterns', y='CustomerSentiment',
-                         color='Churn', title="Customer Sentiment vs Usage Patterns")
+# 5. Histogram for Customer Sentiment
+fig_histogram = px.histogram(df, x='CustomerSentiment', color='Churn', 
+                              title='Distribution of Customer Sentiment by Churn Status',
+                              barmode='group',  # Changed to group mode instead of overlay
+                              color_discrete_sequence=['#FF4500', '#32CD32'])
+st.plotly_chart(fig_histogram)
+
+# 6. Scatter Plot for Customer Engagement vs Usage Patterns
+fig_scatter = px.scatter(df, x='CustomerEngagement', y='UsagePatterns',
+                         color='Churn', title='Customer Engagement vs Usage Patterns',
+                         color_continuous_scale=px.colors.sequential.Viridis,  # Using a gradient scale
+                         opacity=0.8,
+                         range_color=[0, 1])  # Explicitly set the range for better visibility
 st.plotly_chart(fig_scatter)
 
-# Move the form to the sidebar
-st.sidebar.write("## Enter Customer Data for Prediction")
+# Sidebar Layout
+st.sidebar.write("## Churn Prediction")
+# Display the prediction result at the top
+if 'churn_probability' in st.session_state:
+    st.sidebar.write(f"### Churn Probability: {st.session_state.churn_probability:.4f}")
+    if st.session_state.churn_probability > 0.5:
+        st.sidebar.warning("The customer is likely to churn.")
+    else:
+        st.sidebar.success("The customer is unlikely to churn.")
+
+# Sidebar form for input
 with st.sidebar.form("churn_prediction_form"):
+    # Create submit button at the top
+    submit_button = st.form_submit_button(label="Predict Churn")
+
     service_quality = st.slider("Service Quality", 1, 10, 5)
     pricing_and_plans = st.selectbox("Pricing and Plans", ['Basic', 'Standard', 'Premium'])
     contractual_obligations = st.selectbox("Contractual Obligations", ['None', '1 Year', '2 Years'])
@@ -82,41 +132,39 @@ with st.sidebar.form("churn_prediction_form"):
     technology_trends = st.slider("Technology Trends", 1, 10, 5)
     customer_sentiment = st.slider("Customer Sentiment", 1, 5, 3)
 
-    # Submit button
-    submit_button = st.form_submit_button(label="Predict Churn")
+    # Handle categorical features encoding
+    def encode_features(pricing_and_plans, contractual_obligations, customer_lifecycle_stage):
+        pricing_map = {'Basic': [0, 0], 'Standard': [1, 0], 'Premium': [0, 1]}
+        contractual_map = {'None': [0, 0], '1 Year': [1, 0], '2 Years': [0, 1]}
+        lifecycle_map = {'New': [0, 0, 0], 'Active': [1, 0, 0], 'At-Risk': [0, 1, 0], 'Churned': [0, 0, 1]}
+        
+        encoded_pricing = pricing_map[pricing_and_plans]
+        encoded_contract = contractual_map[contractual_obligations]
+        encoded_lifecycle = lifecycle_map[customer_lifecycle_stage]
 
-# Handle categorical features encoding (same as during training)
-def encode_features(pricing_and_plans, contractual_obligations, customer_lifecycle_stage):
-    # Encode 'PricingAndPlans'
-    pricing_map = {'Basic': [0, 0], 'Standard': [1, 0], 'Premium': [0, 1]}
-    contractual_map = {'None': [0, 0], '1 Year': [1, 0], '2 Years': [0, 1]}
-    lifecycle_map = {'New': [0, 0, 0], 'Active': [1, 0, 0], 'At-Risk': [0, 1, 0], 'Churned': [0, 0, 1]}
-    
-    encoded_pricing = pricing_map[pricing_and_plans]
-    encoded_contract = contractual_map[contractual_obligations]
-    encoded_lifecycle = lifecycle_map[customer_lifecycle_stage]
+        return encoded_pricing + encoded_contract + encoded_lifecycle
 
-    return encoded_pricing + encoded_contract + encoded_lifecycle
+    if submit_button:
+        # Encode categorical features
+        encoded_features = encode_features(pricing_and_plans, contractual_obligations, customer_lifecycle_stage)
 
-if submit_button:
-    # Encode categorical features
-    encoded_features = encode_features(pricing_and_plans, contractual_obligations, customer_lifecycle_stage)
+        # Preprocess the input data for prediction
+        new_data = np.array([[service_quality, competitor_offers, customer_engagement,
+                              billing_issues, service_changes, usage_patterns,
+                              economic_factors, technology_trends, customer_sentiment] + encoded_features])
 
-    # Preprocess the input data for prediction
-    new_data = np.array([[service_quality, competitor_offers, customer_engagement,
-                          billing_issues, service_changes, usage_patterns,
-                          economic_factors, technology_trends, customer_sentiment] + encoded_features])
+        # Apply scaling to the new data
+        new_data_scaled = scaler.transform(new_data)
+        
+        # Perform prediction
+        prediction = model.predict(new_data_scaled)
+        churn_probability = prediction[0][0]
+        st.session_state.churn_probability = churn_probability
 
-    # Apply scaling to the new data
-    new_data_scaled = scaler.transform(new_data)
-    
-    # Perform prediction
-    prediction = model.predict(new_data_scaled)
-    churn_probability = prediction[0][0]
-    
-    # Display the prediction result
-    st.sidebar.write(f"### Churn Probability: {churn_probability:.4f}")
-    if churn_probability > 0.5:
-        st.sidebar.warning("The customer is likely to churn.")
-    else:
-        st.sidebar.success("The customer is unlikely to churn.")
+        # Display the prediction result at the top
+        st.sidebar.write(f"### Churn Probability: {churn_probability:.4f}")
+        if churn_probability > 0.5:
+            st.sidebar.warning("The customer is likely to churn.")
+        else:
+            st.sidebar.success("The customer is unlikely to churn.")
+
