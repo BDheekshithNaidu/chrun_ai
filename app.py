@@ -102,7 +102,7 @@ st.plotly_chart(fig_bar)
 fig_histogram = px.histogram(df, x='CustomerSentiment', color='Churn', 
                               title='Distribution of Customer Sentiment by Churn Status',
                               barmode='group',
-                              color_discrete_sequence=['#FF4500', '#32CD32'])
+                              color_discrete_sequence=['#32CD32', '#FF4500'])
 st.plotly_chart(fig_histogram)
 
 # 6. Scatter Plot for Customer Engagement vs Usage Patterns
