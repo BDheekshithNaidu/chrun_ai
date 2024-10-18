@@ -71,9 +71,9 @@ fig_stacked_bar = px.bar(pricing_churn_percentage, x=pricing_churn_percentage.in
                           color_discrete_sequence=['#FF4500', '#32CD32'])
 st.plotly_chart(fig_stacked_bar)
 
-# 3. Heatmap for Feature Correlation with intelligent description
+# 3. Heatmap for Feature Correlation
 st.write("### Feature Correlation Heatmap")
-st.write("This heatmap displays the correlations between numeric features in the dataset. A value close to 1 or -1 indicates a strong relationship, while values near 0 indicate weak relationships.")
+st.write("This heatmap displays the correlations between numeric features in the dataset.")
 numeric_df = df.select_dtypes(include=[np.number])
 correlation_matrix = numeric_df.corr()
 plt.figure(figsize=(10, 8))
@@ -82,31 +82,40 @@ st.pyplot(plt)
 
 # 4. Bar Plot for Customer Engagement vs Churn
 customer_engagement_churn = df.groupby('Churn')['CustomerEngagement'].mean().reset_index()
-fig_bar = px.bar(customer_engagement_churn, x='Churn', y='CustomerEngagement',
+
+# Create a color map manually
+color_map = {0: '#FF0000', 1: '#00FF00'}  # Red for not churned, green for churned
+customer_engagement_churn['Color'] = customer_engagement_churn['Churn'].map(color_map)
+
+# Create the bar plot with the specified colors
+fig_bar = px.bar(customer_engagement_churn, 
+                  x='Churn', 
+                  y='CustomerEngagement',
                   title='Average Customer Engagement by Churn Status', 
                   labels={'CustomerEngagement': 'Average Engagement'},
-                  color='Churn',
-                  color_discrete_map={0: '#808000', 1: '#FF0000'})  # Different colors for churn situations
+                  color='Color',  # Use the new 'Color' column for coloring
+                  color_discrete_map=color_map)  # Use the color map directly
 st.plotly_chart(fig_bar)
+
 
 # 5. Histogram for Customer Sentiment
 fig_histogram = px.histogram(df, x='CustomerSentiment', color='Churn', 
                               title='Distribution of Customer Sentiment by Churn Status',
-                              barmode='group',  # Changed to group mode instead of overlay
+                              barmode='group',
                               color_discrete_sequence=['#FF4500', '#32CD32'])
 st.plotly_chart(fig_histogram)
 
 # 6. Scatter Plot for Customer Engagement vs Usage Patterns
 fig_scatter = px.scatter(df, x='CustomerEngagement', y='UsagePatterns',
                          color='Churn', title='Customer Engagement vs Usage Patterns',
-                         color_continuous_scale=px.colors.sequential.Viridis,  # Using a gradient scale
+                         color_continuous_scale=px.colors.sequential.Viridis,  
                          opacity=0.8,
-                         range_color=[0, 1])  # Explicitly set the range for better visibility
+                         range_color=[0, 1])  
 st.plotly_chart(fig_scatter)
 
 # Sidebar Layout
 st.sidebar.write("## Churn Prediction")
-# Display the prediction result at the top
+# Display the prediction result only in the sidebar
 if 'churn_probability' in st.session_state:
     st.sidebar.write(f"### Churn Probability: {st.session_state.churn_probability:.4f}")
     if st.session_state.churn_probability > 0.5:
@@ -116,7 +125,6 @@ if 'churn_probability' in st.session_state:
 
 # Sidebar form for input
 with st.sidebar.form("churn_prediction_form"):
-    # Create submit button at the top
     submit_button = st.form_submit_button(label="Predict Churn")
 
     service_quality = st.slider("Service Quality", 1, 10, 5)
@@ -160,11 +168,3 @@ with st.sidebar.form("churn_prediction_form"):
         prediction = model.predict(new_data_scaled)
         churn_probability = prediction[0][0]
         st.session_state.churn_probability = churn_probability
-
-        # Display the prediction result at the top
-        st.sidebar.write(f"### Churn Probability: {churn_probability:.4f}")
-        if churn_probability > 0.5:
-            st.sidebar.warning("The customer is likely to churn.")
-        else:
-            st.sidebar.success("The customer is unlikely to churn.")
-
