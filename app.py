@@ -281,13 +281,3 @@ with st.sidebar.form("churn_prediction_form"):
         st.session_state.churn_probability = churn_probability
 
         st.sidebar.write(f"### Churn Probability: {churn_probability:.4f}")
-
-        if churn_probability > 0.5:
-
-            st.sidebar.warning("The customer is likely to churn.")
-
-        else:
-
-            st.sidebar.success("The customer is unlikely to churn.")
-
- 
