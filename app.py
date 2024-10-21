@@ -68,7 +68,7 @@ fig_stacked_bar = px.bar(pricing_churn_percentage, x=pricing_churn_percentage.in
                           title='Churn Distribution by Pricing and Plans (Percentage)',
                           labels={'value': 'Percentage', 'variable': 'Churn'},
                           text_auto=True,
-                          color_discrete_sequence=['#FF4500', '#32CD32'])
+                          color_discrete_sequence=['#32CD32', '#FF4500'])
 st.plotly_chart(fig_stacked_bar)
  
 # 3. Heatmap for Feature Correlation
@@ -167,4 +167,5 @@ with st.sidebar.form("churn_prediction_form"):
         prediction = model.predict(new_data_scaled)
         churn_probability = prediction[0][0]
         st.session_state.churn_probability = churn_probability
+ 
  
