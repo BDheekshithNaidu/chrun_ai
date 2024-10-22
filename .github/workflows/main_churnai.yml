@@ -69,6 +69,16 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_B87DE264A9F54CD6B8D07CDC597F17E7 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_13B88FCCC7FC4F0C8E9F4EA27332773A }}
 
+        - name: Check if a deployment is already in progress
+        id: check-deployment
+        run: |
+          # Command to check if a deployment is in progress
+          # (This is a placeholder; replace with actual check command for your scenario)
+          if [ "$(az webapp deployment list --name Churn-AI --resource-group <YourResourceGroupName> --query "[?status=='InProgress']" -o tsv)" ]; then
+            echo "Deployment in progress. Stopping the workflow."
+            exit 1
+          fi
+          
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
